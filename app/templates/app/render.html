@@ -1,9 +1,9 @@
-<ul class="unread_notifications notifications">
+<ul class="note">
     {% for notice in notify_unread %}
     {% include 'app/unread.html' %}
     {% endfor %}
 </ul>
-<ul id="read_notificcations">
+<ul class="note">
     {% for notice in notify_read %}
     {% include 'app/read.html' %}
     {% endfor %}

@@ -10,52 +10,68 @@
     <title>Document</title>
     <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
     {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
 </head>
 
 <body>
-    {% if unread_count %}
-    You have <strong id="count">{{ unread_count }}</strong> unread notifications.
-    {%else%}
-    You have <strong id="count">0</strong> unread notifications.
-    {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto ml-auto">
+                <li class="nav-item dropdown keep-open">
+                      <a href="#" class="notification nav-link dropdown-toggle caret-off"  id="navbarDropdown" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bell" aria-hidden="true"></i>
+                       <span class="badge mt-1"> <strong id="count">{{ unread_count }}</strong></span>
+                      </a>
+                    <div id="notifications" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for notice in notify_unread %}
+                        {% include 'app/unread.html' %}
+                        {% endfor %}
+                        {% for notice in notify_read %}
+                        {% include 'app/read.html' %}
+                        {% endfor %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">nfor Is in yaounde cameroon 1 hour, 45 minutes ago</a>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <!-- 
     {% live_notify_badge %}
     {% live_notify_list %} -->
-    <div id="notifications">
-        <ul class="unread_notifications notifications">
-            {% for notice in notify_unread %}
-            {% include 'app/unread.html' %}
-            {% endfor %}
-        </ul>
-        <ul id="read_notificcations">
-            {% for notice in notify_read %}
-            {% include 'app/read.html' %}
-            {% endfor %}
-        </ul>
-    </div>
+    <script src="{% static 'app/js/jquery-3.5.0_2.js' %}"></script>
+    <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
 
-
-    <script src="https://code.jquery.com/jquery-3.5.0.js"
-        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
-        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
-        crossorigin="anonymous"></script>
 
 
     <script type="text/javascript">
 
         Notification_Url = '/render_notifications/';
+        Interval = 50 // in Seconds
 
         // On page start...
-        updateChat()
-        function updateChat() {
+        getNotifications()
+        function getNotifications() {
             $.getJSON(Notification_Url, function (data) {
                 $('#notifications').html(data.html)
                 document.getElementById("count").innerHTML = data.unread_count
             });
-            setTimeout(updateChat, 50000)
+            setTimeout(getNotifications, Interval * 1000)
         }
 
         function markRead(obj) {
@@ -91,6 +107,15 @@
                     console.log("error");
                 });
         }
+
+        // Handling Dropdown for Notification
+        $('.dropdown.keep-open').on({
+            //close when clicked off
+            "shown.bs.dropdown": function () { this.closable = false; },
+            //don't close when clicked oped dropdown
+            "click": function () { this.closable = true; },
+            "hide.bs.dropdown": function () { return this.closable; }
+        });
     </script>
 
 </body>

@@ -1,5 +1,5 @@
-<div class="alert alert-block alert-secondary">
-    <h4>
+<div class="alert alert-block alert-secondary dropdown-item ">
+    <p>
         <i class="icon-mail{% if notice.unread %}-alt{% endif %}"></i>
 
         <a href="">{{ notice.actor }}</a>
@@ -7,11 +7,9 @@
         {% if notice.target %}
         <a href="">{{ notice.target }}</a>
         {% endif %}
-    </h4>
-
-    <p>{{ notice.timesince }} ago</p>
-
-    <p>{{ notice.description|linebreaksbr }}</p>
+    </p>
+    {{ notice.timesince }} ago
+    {{ notice.description|linebreaksbr }}
 
     <div class="notice-actions">
         {% for action in notice.data.actions %}
@@ -19,14 +17,12 @@
         {% endfor %}
     </div>
     {% if notice.unread %}
-    <a class=" pull-right" pk={{ notice.slug}} href="" onclick="markRead(this); return false;">
+    <a class="" pk={{ notice.slug}} href="" onclick="markRead(this); return false;">
         Mark as read <i class="icon-close"></i>
     </a>
     {% else %}
-    <a class="pull-right" pk={{ notice.slug}} href="" onclick="markUnRead(this); return false;">
+    <a class="" pk={{ notice.slug}} href="" onclick="markUnRead(this); return false;">
         mark as unread <i class="icon-close"></i>
     </a>
     {% endif %}
-
-
 </div>
