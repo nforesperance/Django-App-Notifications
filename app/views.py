@@ -110,7 +110,7 @@ def render_notifications(request):
         # return HttpResponse(data, mimetype)
         unread_count = len(notifications.unread())
         html = render_to_string(
-            'app/notice.html', context)
+            'app/render.html', context)
         res = {'html': html,
                'unread_count': unread_count
                }

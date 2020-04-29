@@ -24,22 +24,18 @@
     {% live_notify_badge %}
     {% live_notify_list %} -->
     <div id="notifications">
-        <ul>
-            {% for notice in notifications %}
+        <ul class="unread_notifications notifications">
+            {% for notice in notify_unread %}
+            {% include 'app/unread.html' %}
+            {% endfor %}
+        </ul>
+        <ul id="read_notificcations">
+            {% for notice in notify_read %}
             {% include 'app/read.html' %}
             {% endfor %}
         </ul>
     </div>
-    <!-- <ul class="unread_notifications notifications">
-        {% for notice in notify_unread %}
-        {% include 'app/unread.html' %}
-        {% endfor %}
-    </ul>
-    <ul id="read_notificcations">
-        {% for notice in notify_read %}
-        {% include 'app/read.html' %}
-        {% endfor %}
-    </ul> -->
+
 
     <script src="https://code.jquery.com/jquery-3.5.0.js"
         integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
@@ -65,26 +61,35 @@
         function markRead(obj) {
             pk = obj.getAttribute("pk")
             Read_Url = 'mark_read/' + pk
-            Notification_Url = '/render_notifications/';
             $.getJSON(Read_Url, function (data) {
-                $.getJSON(Notification_Url, function (data) {
-                    $('#notifications').html(data.html)
-                    document.getElementById("count").innerHTML = data.unread_count
-                    return false
+            })
+                .done(function () {
+                    $.getJSON(Notification_Url, function (data) {
+                        $('#notifications').html(data.html)
+                        document.getElementById("count").innerHTML = data.unread_count
+                        return false
+                    });
+                })
+                .fail(function () {
+                    console.log("error");
                 });
-            });
         }
         function markUnRead(obj) {
             pk = obj.getAttribute("pk")
             Read_Url = 'mark_unread/' + pk
-            Notification_Url = '/render_notifications/';
             $.getJSON(Read_Url, function (data) {
-                $.getJSON(Notification_Url, function (data) {
-                    $('#notifications').html(data.html)
-                    document.getElementById("count").innerHTML = data.unread_count
-                    return false
+
+            })
+                .done(function () {
+                    $.getJSON(Notification_Url, function (data) {
+                        $('#notifications').html(data.html)
+                        document.getElementById("count").innerHTML = data.unread_count
+                        return false
+                    });
+                })
+                .fail(function () {
+                    console.log("error");
                 });
-            });
         }
     </script>
 
