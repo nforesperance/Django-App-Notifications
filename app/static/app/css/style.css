@@ -20,4 +20,13 @@
 }
 #notifications{
 max-width: 350px;
+min-width: 350px !important;
+}
+.timesince{
+    color: rgb(63, 173, 247);
+    font-weight: 300;
+}
+
+.text{
+    margin-bottom: 0em !important;
 }

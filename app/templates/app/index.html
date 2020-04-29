@@ -25,11 +25,11 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto ml-auto">
                 <li class="nav-item dropdown keep-open">
-                      <a href="#" class="notification nav-link dropdown-toggle caret-off"  id="navbarDropdown" role="button"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a href="#" class="notification nav-link dropdown-toggle caret-off" id="navbarDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell" aria-hidden="true"></i>
-                       <span class="badge mt-1"> <strong id="count">{{ unread_count }}</strong></span>
-                      </a>
+                        <span class="badge mt-1"> <strong id="count">{{ unread_count }}</strong></span>
+                    </a>
                     <div id="notifications" class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for notice in notify_unread %}
                         {% include 'app/unread.html' %}
@@ -111,7 +111,7 @@
         // Handling Dropdown for Notification
         $('.dropdown.keep-open').on({
             //close when clicked off
-            "shown.bs.dropdown": function () { this.closable = false; },
+            "shown.bs.dropdown": function () { this.closable = true; },
             //don't close when clicked oped dropdown
             "click": function () { this.closable = true; },
             "hide.bs.dropdown": function () { return this.closable; }

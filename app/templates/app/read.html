@@ -1,21 +1,26 @@
-<div class="alert alert-block alert-secondary dropdown-item ">
-    <p>
-        <i class="icon-mail{% if notice.unread %}-alt{% endif %}"></i>
-
+<div class="alert alert-block alert-secondary">
+    <p class="text">
         <a href="">{{ notice.actor }}</a>
         {{ notice.verb }}
         {% if notice.target %}
         <a href="">{{ notice.target }}</a>
         {% endif %}
+       <span class="timesince">{{ notice.timesince }} ago</span> 
     </p>
-    {{ notice.timesince }} ago
-    {{ notice.description|linebreaksbr }}
+    {% if notice.description %}
+     {{ notice.description|linebreaksbr }}
 
+    {% else %}
+    {% endif %}
+   
+    {% if notice.data.actions %}
     <div class="notice-actions">
         {% for action in notice.data.actions %}
         <a class="btn" href="{{ action.href }}">{{ action.title }}</a>
         {% endfor %}
     </div>
+    {% else %}
+    {% endif %}
     {% if notice.unread %}
     <a class="" pk={{ notice.slug}} href="" onclick="markRead(this); return false;">
         Mark as read <i class="icon-close"></i>
