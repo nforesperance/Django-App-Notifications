@@ -36,7 +36,7 @@
                         <i class="fa fa-bell" aria-hidden="true"></i>
                         <span class="badge mt-1"> <strong id="count">{{ unread_count }}</strong></span>
                     </a>
-                    <div id="notifications" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div id="notifications" class="dropdown-menu notifications" aria-labelledby="navbarDropdown">
                         {% for notice in notify_unread %}
                         {% include 'app/unread.html' %}
                         {% endfor %}
@@ -50,6 +50,17 @@
         </div>
     </nav>
 
+    <div class="container">
+        <div class="all_notifications">
+            {% for notice in notify_unread %}
+            {% include 'app/unread.html' %}
+            {% endfor %}
+            {% for notice in notify_read %}
+            {% include 'app/read.html' %}
+            {% endfor %}
+        </div>
+    </div>
+
     <!-- 
     {% live_notify_badge %}
     {% live_notify_list %} -->
@@ -59,20 +70,11 @@
 
 
     <script type="text/javascript">
+        base_url = "http://localhost:8000/"
 
-        Notification_Url = '/render_notifications/';
-        Interval = 3 // in Seconds
-
-        // On page start...
-        getNotifications()
-        function getNotifications() {
-            $.getJSON(Notification_Url, function (data) {
-                $('#notifications').html(data.html)
-                document.getElementById("count").innerHTML = data.unread_count
-            });
-            setTimeout(getNotifications, Interval * 1000)
-        }
-
+        Notification_Url = base_url + 'render_all/';
+        few_Url =  base_url+'render_notifications/'
+        
         // this function was used to mark a single notification as read
         function markRead(obj) {
             pk = obj.getAttribute("pk")
@@ -81,7 +83,7 @@
             })
                 .done(function () {
                     $.getJSON(Notification_Url, function (data) {
-                        $('#notifications').html(data.html)
+                        $('.notifications').html(data.html)
                         document.getElementById("count").innerHTML = data.unread_count
                         return false
                     });
@@ -120,13 +122,19 @@
 
         //set all notifications to read on dropdown show
         $(function () {
+            $.getJSON(Notification_Url, function (data) {
+                $('.all_notifications').html(data.html)
+                document.getElementById("count").innerHTML = data.unread_count
+                return false
+            });
+
             $('#notifyDropdown').on('show.bs.dropdown', function () {
-                mark_all_as_read = 'mark_all_read/'
+                mark_all_as_read = base_url+'mark_all_read/'
                 $.getJSON(mark_all_as_read, function (data) {
                 })
                     .done(function () {
-                        $.getJSON(Notification_Url, function (data) {
-                            $('#notifications').html(data.html)
+                        $.getJSON(few_Url, function (data) {
+                            $('.notifications').html(data.html)
                             document.getElementById("count").innerHTML = data.unread_count
                             return false
                         });
@@ -136,6 +144,7 @@
                     });
 
             });
+
         });
     </script>
 

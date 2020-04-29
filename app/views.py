@@ -12,19 +12,29 @@ from rest_framework.permissions import AllowAny
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 import json as simplejson
+from itertools import count
 
 
 def homepageView(request):
     # user = User.objects.get(username="nfor")
     # notify.send(user, recipient=user, verb='Django notifications',
     #             )
-    notifications = Notification.objects.filter(recipient=request.user)
+    max = 6
+    unread = Notification.objects.filter(
+        recipient=request.user, unread=True)[:max]
+    unread_no = len(unread)
+    read_no = max-unread_no
+    read = Notification.objects.filter(
+        recipient=request.user, unread=False)[:read_no]
     context = {
-        "notify_unread": notifications.unread(),
-        "notify_read": notifications.read(),
-        "notifications": notifications
+        "notify_unread": unread,
+        "notify_read": unread
     }
     return render(request, 'app/index.html', context)
+
+
+def all(request):
+    return render(request, 'app/all.html',)
 
 
 @login_required
@@ -91,11 +101,14 @@ class mark_unread(viewsets.ViewSet):
         return Response({
                         "results": "success",
                         })
+
+
 @permission_classes((AllowAny, ))
 class mark_all_read(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving Quizes.
     """
+
     def list(self, request):
         notifications = Notification.objects.filter(recipient=request.user)
         notifications.mark_all_as_read()
@@ -103,14 +116,22 @@ class mark_all_read(viewsets.ViewSet):
                         "results": "success",
                         })
 
+
 def render_notifications(request):
+    max = 6
     if request.is_ajax():
         format = 'json'
         mimetype = 'application/json'
         notifications = Notification.objects.filter(recipient=request.user)
+        unread = Notification.objects.filter(
+            recipient=request.user, unread=True)[:max]
+        unread_no = len(unread)
+        read_no = max-unread_no
+        read = Notification.objects.filter(
+            recipient=request.user, unread=False)[:read_no]
         context = {
-            "notify_unread": notifications.unread(),
-            "notify_read": notifications.read(),
+            "notify_unread": unread,
+            "notify_read": read,
             "notifications": notifications
         }
         #m = str(q['id'])
@@ -120,6 +141,33 @@ def render_notifications(request):
         unread_count = len(notifications.unread())
         html = render_to_string(
             'app/render.html', context)
+        res = {'html': html,
+               'unread_count': unread_count
+               }
+        return HttpResponse(simplejson.dumps(res), mimetype)
+
+
+def render_all(request):
+    if request.is_ajax():
+        format = 'json'
+        mimetype = 'application/json'
+        notifications = Notification.objects.filter(recipient=request.user)
+        unread = Notification.objects.filter(
+            recipient=request.user, unread=True)
+        read = Notification.objects.filter(
+            recipient=request.user, unread=False)
+        context = {
+            "notify_unread": unread,
+            "notify_read": read,
+            "notifications": notifications
+        }
+        #m = str(q['id'])
+        #json = simplejson.dumps(message)
+        #data = serializers.serialize(format, o)
+        # return HttpResponse(data, mimetype)
+        unread_count = len(notifications.unread())
+        html = render_to_string(
+            'app/all_render.html', context)
         res = {'html': html,
                'unread_count': unread_count
                }
