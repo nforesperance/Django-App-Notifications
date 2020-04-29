@@ -24,6 +24,7 @@ router.register(r'notify', app_views.get_notifications,
                 basename='get_notifications')
 router.register(r'mark_unread', app_views.mark_unread, basename='mark_unread')
 router.register(r'mark_read', app_views.mark_read, basename='mark_read')
+router.register(r'mark_all_read', app_views.mark_all_read, basename='mark_all_read')
 urlpatterns = [
     path('admin/', admin.site.urls),
     url('^inbox/notifications/',

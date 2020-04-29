@@ -92,7 +92,17 @@ class mark_unread(viewsets.ViewSet):
         return Response({
                         "results": "success",
                         })
-
+@permission_classes((AllowAny, ))
+class mark_all_read(viewsets.ViewSet):
+    """
+    A simple ViewSet for listing or retrieving Quizes.
+    """
+    def list(self, request):
+        notifications = Notification.objects.filter(recipient=request.user)
+        notifications.mark_all_as_read()
+        return Response({
+                        "results": "success",
+                        })
 
 def render_notifications(request):
     if request.is_ajax():

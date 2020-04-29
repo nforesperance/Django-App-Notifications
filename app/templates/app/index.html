@@ -24,7 +24,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto ml-auto">
-                <li class="nav-item dropdown keep-open">
+                <li class="nav-item dropdown keep-open" id="notifyDropdown">
                     <a href="#" class="notification nav-link dropdown-toggle caret-off" id="navbarDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell" aria-hidden="true"></i>
@@ -73,7 +73,8 @@
             });
             setTimeout(getNotifications, Interval * 1000)
         }
-
+       
+       // this function was used to mark a single notification as read
         function markRead(obj) {
             pk = obj.getAttribute("pk")
             Read_Url = 'mark_read/' + pk
@@ -90,6 +91,7 @@
                     console.log("error");
                 });
         }
+        // this function was used to mark a single notification as unread
         function markUnRead(obj) {
             pk = obj.getAttribute("pk")
             Read_Url = 'mark_unread/' + pk
@@ -116,6 +118,26 @@
             "click": function () { this.closable = true; },
             "hide.bs.dropdown": function () { return this.closable; }
         });
+
+        //set all notifications to read on dropdown show
+        // $(function () {
+        //     $('#notifyDropdown').on('show.bs.dropdown', function () {
+        //         mark_all_as_read = 'mark_all_read/'
+        //         $.getJSON(mark_all_as_read, function (data) {
+        //         })
+        //             .done(function () {
+        //                 $.getJSON(Notification_Url, function (data) {
+        //                     $('#notifications').html(data.html)
+        //                     document.getElementById("count").innerHTML = data.unread_count
+        //                     return false
+        //                 });
+        //             })
+        //             .fail(function () {
+        //                 console.log("error");
+        //             });
+
+        //     });
+        // });
     </script>
 
 </body>
