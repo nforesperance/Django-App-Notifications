@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
+import notifications.urls
+import app.ur
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('app.urls'))
+    include('',)
 ]
+
+urlpatterns += router.urls

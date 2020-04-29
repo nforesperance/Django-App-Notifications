@@ -21,7 +21,8 @@
     </div>
     {% else %}
     {% endif %}
-    {% if notice.unread %}
+    
+    {% comment %} {% if notice.unread %}
     <a class="" pk={{ notice.slug}} href="" onclick="markRead(this); return false;">
         Mark as read <i class="icon-close"></i>
     </a>
@@ -29,5 +30,5 @@
     <a class="" pk={{ notice.slug}} href="" onclick="markUnRead(this); return false;">
         mark as unread <i class="icon-close"></i>
     </a>
-    {% endif %}
+    {% endif %} {% endcomment %}
 </div>

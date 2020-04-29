@@ -24,6 +24,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
                 <li class="nav-item dropdown keep-open" id="notifyDropdown">
                     <a href="#" class="notification nav-link dropdown-toggle caret-off" id="navbarDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,12 +47,7 @@
                         <a class="dropdown-item" href="#">nfor Is in yaounde cameroon 1 hour, 45 minutes ago</a>
                     </div>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
+
             </ul>
         </div>
     </nav>
@@ -54,15 +55,15 @@
     <!-- 
     {% live_notify_badge %}
     {% live_notify_list %} -->
-    <script src="{% static 'app/js/jquery-3.5.0_2.js' %}"></script>
-    <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'app/js/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'app/js/bootstrap.bundle.js' %}"></script>
 
 
 
     <script type="text/javascript">
 
         Notification_Url = '/render_notifications/';
-        Interval = 50 // in Seconds
+        Interval = 3 // in Seconds
 
         // On page start...
         getNotifications()
@@ -73,8 +74,8 @@
             });
             setTimeout(getNotifications, Interval * 1000)
         }
-       
-       // this function was used to mark a single notification as read
+
+        // this function was used to mark a single notification as read
         function markRead(obj) {
             pk = obj.getAttribute("pk")
             Read_Url = 'mark_read/' + pk
@@ -120,24 +121,24 @@
         });
 
         //set all notifications to read on dropdown show
-        // $(function () {
-        //     $('#notifyDropdown').on('show.bs.dropdown', function () {
-        //         mark_all_as_read = 'mark_all_read/'
-        //         $.getJSON(mark_all_as_read, function (data) {
-        //         })
-        //             .done(function () {
-        //                 $.getJSON(Notification_Url, function (data) {
-        //                     $('#notifications').html(data.html)
-        //                     document.getElementById("count").innerHTML = data.unread_count
-        //                     return false
-        //                 });
-        //             })
-        //             .fail(function () {
-        //                 console.log("error");
-        //             });
+        $(function () {
+            $('#notifyDropdown').on('show.bs.dropdown', function () {
+                mark_all_as_read = 'mark_all_read/'
+                $.getJSON(mark_all_as_read, function (data) {
+                })
+                    .done(function () {
+                        $.getJSON(Notification_Url, function (data) {
+                            $('#notifications').html(data.html)
+                            document.getElementById("count").innerHTML = data.unread_count
+                            return false
+                        });
+                    })
+                    .fail(function () {
+                        console.log("error");
+                    });
 
-        //     });
-        // });
+            });
+        });
     </script>
 
 </body>
