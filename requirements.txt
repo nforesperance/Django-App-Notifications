@@ -3,7 +3,7 @@ autopep8==1.5.2
 Django==3.0.5
 django-model-utils==4.0.0
 django-notifications-hq==1.6.0
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 jsonfield==3.1.0
 pycodestyle==2.5.0
 pytz==2020.1
